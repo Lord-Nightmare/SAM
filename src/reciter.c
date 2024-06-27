@@ -210,9 +210,11 @@ pos36700:
                 
             case '@':
                 if(!Code37055(mem59-1,4)) { 
-                    A = inputtemp[X];
-                    if (A != 72) r = 1;
-                    if ((A != 84) && (A != 67) && (A != 83)) r = 1;
+                    if (inputtemp[X] != 'H') r = 1;
+                    else {
+                        A = inputtemp[--X];
+                        if ((A != 'T') && (A != 'C') && (A != 'S')) r = 1;
+                    }
                 }
                 break;
             case '+':
