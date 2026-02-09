@@ -58,7 +58,7 @@ int TextToPhonemes(char *input) // Code36484
 	unsigned char mem66;     // position of '('
 	unsigned char mem36653;
 
-	inputtemp[0] = 32;
+	inputtemp[0] = ' ';
 
 	// secure copy of input
 	// because input will be overwritten by phonemes
@@ -67,10 +67,10 @@ int TextToPhonemes(char *input) // Code36484
 	do
 	{
 		//pos36499:
-		Ar = input[Yr] & 127;
-		if ( Ar >= 112) Ar = Ar & 95;
-		else if ( Ar >= 96) Ar = Ar & 79;
-		
+		Ar = input[Yr] & 0x7f; // mask input to low ASCII range
+		// if we're a lowercase character, make us uppercase; this is equivalent to `if ( Ar >= 0x60 ) Ar -= 0x20;`
+		if ( Ar >= 0x70 ) Ar = Ar & 0x5f;
+		else if ( Ar >= 0x60 ) Ar = Ar & 0x4f;
 		inputtemp[Xr] = Ar;
 		Xr++;
 		Yr++;
@@ -132,7 +132,7 @@ pos36554:
 	//pos36630:
 	Ar = mem57;
 	if(Ar != 0) goto pos36677;
-	Ar = 32;
+	Ar = ' ';
 	inputtemp[Xr] = ' ';
 	mem56++;
 	Xr = mem56;
@@ -304,10 +304,10 @@ pos36935:
 	Ar = Ar & 16;
 	if(Ar != 0) goto pos36930;
 	Ar = inputtemp[Xr];
-	if (Ar != 72) goto pos36700;
+	if (Ar != 'H') goto pos36700;
 	Xr--;
 	Ar = inputtemp[Xr];
-	if ((Ar == 67) || (Ar == 83)) goto pos36930;
+	if ((Ar == 'C') || (Ar == 'S')) goto pos36930;
 	goto pos36700;
 
 	// --------------
@@ -317,8 +317,8 @@ pos36967:
 	Ar = Ar & 4;
 	if(Ar != 0) goto pos36930;
 	Ar = inputtemp[Xr];
-	if (Ar != 72) goto pos36700;
-	if ((Ar != 84) && (Ar != 67) && (Ar != 83)) goto pos36700;
+	if (Ar != 'H') goto pos36700;
+	if ((Ar != 'T') && (Ar != 'C') && (Ar != 'S')) goto pos36700;
 	mem59 = Xr;
 	goto pos36791;
 
@@ -370,31 +370,31 @@ pos37108:
 	mem58 = Xr;
 	goto pos37184;
 pos37113:
-	if ((Ar == 83) || (Ar == 68)) goto pos37108;  // 'S' 'D'
-	if (Ar != 76) goto pos37135; // 'L'
+	if ((Ar == 'S') || (Ar == 'D')) goto pos37108;
+	if (Ar != 'L') goto pos37135;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if (Ar != 89) goto pos36700;
+	if (Ar != 'Y') goto pos36700;
 	goto pos37108;
 	
 pos37135:
-	if (Ar != 70) goto pos36700;
+	if (Ar != 'F') goto pos36700;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if (Ar != 85) goto pos36700;
+	if (Ar != 'U') goto pos36700;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if (Ar == 76) goto pos37108;
+	if (Ar == 'L') goto pos37108;
 	goto pos36700;
 
 pos37157:
-	if (Ar != 73) goto pos36700;
+	if (Ar != 'I') goto pos36700;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if (Ar != 78) goto pos36700;
+	if (Ar != 'N') goto pos36700;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if (Ar == 71) goto pos37108;
+	if (Ar == 'G') goto pos37108;
 	//pos37177:
 	goto pos36700;
 
@@ -425,15 +425,15 @@ pos37184:
 	goto pos37184;
 pos37226:
 	Ar = mem57;
-	if (Ar == 32) goto pos37295;   // ' '
-	if (Ar == 35) goto pos37310;   // '#'
-	if (Ar == 46) goto pos37320;   // '.'
-	if (Ar == 38) goto pos37335;   // '&'
-	if (Ar == 64) goto pos37367;   // ''
-	if (Ar == 94) goto pos37404;   // ''
-	if (Ar == 43) goto pos37419;   // '+'
-	if (Ar == 58) goto pos37440;   // ':'
-	if (Ar == 37) goto pos37077;   // '%'
+	if (Ar == ' ') goto pos37295;
+	if (Ar == '#') goto pos37310;
+	if (Ar == '.') goto pos37320;
+	if (Ar == '&') goto pos37335;
+	if (Ar == '@') goto pos37367;
+	if (Ar == '^') goto pos37404;
+	if (Ar == '+') goto pos37419;
+	if (Ar == ':') goto pos37440;
+	if (Ar == '%') goto pos37077;
 	//pos37291:
 	//	Code42041(); //Error
 	//37294: BRK
@@ -475,10 +475,10 @@ pos37335:
 	Ar = Ar & 16;
 	if(Ar != 0) goto pos37330;
 	Ar = inputtemp[Xr];
-	if (Ar != 72) goto pos36700;
+	if (Ar != 'H') goto pos36700;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if ((Ar == 67) || (Ar == 83)) goto pos37330;
+	if ((Ar == 'C') || (Ar == 'S')) goto pos37330;
 	goto pos36700;
 
 	// --------------
@@ -489,8 +489,8 @@ pos37367:
 	Ar = Ar & 4;
 	if(Ar != 0) goto pos37330;
 	Ar = inputtemp[Xr];
-	if (Ar != 72) goto pos36700;
-	if ((Ar != 84) && (Ar != 67) && (Ar != 83)) goto pos36700;
+	if (Ar != 'H') goto pos36700;
+	if ((Ar != 'T') && (Ar != 'C') && (Ar != 'S')) goto pos36700;
 	mem58 = Xr;
 	goto pos37184;
 
@@ -510,7 +510,7 @@ pos37419:
 	Xr = mem58;
 	Xr++;
 	Ar = inputtemp[Xr];
-	if ((Ar == 69) || (Ar == 73) || (Ar == 89)) goto pos37414;
+	if ((Ar == 'E') || (Ar == 'I') || (Ar == 'Y')) goto pos37414;
 	goto pos36700;
 
 // ----------------------
