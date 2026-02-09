@@ -328,6 +328,10 @@ pos36967:
 	if(Ar != 0) goto pos36930;
 	Ar = inputtemp[Xr];
 	if (Ar != 'H') goto pos36700;
+	// original code bug here, the next two lines were missing:
+	Xr--;
+	Ar = inputtemp[Xr];
+	// end bugfix
 	if ((Ar != 'T') && (Ar != 'C') && (Ar != 'S')) goto pos36700;
 	mem59 = Xr;
 	goto pos36791;
@@ -481,6 +485,8 @@ pos37330:
 	// --------------
 
 pos37335:
+	// original code bug here, this whole section is in the wrong order
+	/* original code
 	Code37066(mem58);
 	Ar = Ar & A_SIBIL;
 	if(Ar != 0) goto pos37330;
@@ -489,20 +495,49 @@ pos37335:
 	Xr++;
 	Ar = inputtemp[Xr];
 	if ((Ar == 'C') || (Ar == 'S')) goto pos37330;
+	*/
+	Xr = mem58;
+	Xr++;
+	Ar = inputtemp[Xr];
+	if ((Ar != 'C') && (Ar != 'S')) goto pos37sibilr;
+	Xr++;
+	Ar = inputtemp[Xr];
+	if (Ar == 'H') goto pos37330;
+	Xr--;
+pos37sibilr:
+	Xr--;
+	Code37066(mem58);
+	Ar = Ar & A_SIBIL;
+	if(Ar != 0) goto pos37330;
 	goto pos36700;
 
 	// --------------
 
 
 pos37367:
+	// original code bugs here, this whole section is in the wrong order and is missing some code
+	/* original code
 	Code37066(mem58);
 	Ar = Ar & A_UAFF;
 	if(Ar != 0) goto pos37330;
 	Ar = inputtemp[Xr];
 	if (Ar != 'H') goto pos36700;
 	if ((Ar != 'T') && (Ar != 'C') && (Ar != 'S')) goto pos36700;
-	mem58 = Xr;
-	goto pos37184;
+	*/
+	Xr = mem58;
+	Xr++;
+	Ar = inputtemp[Xr];
+	if ((Ar != 'T') && (Ar != 'C') && (Ar != 'S')) goto pos37uaffr;
+	Xr++;
+	Ar = inputtemp[Xr];
+	if (Ar == 'H') goto pos37330;
+	Xr--;
+pos37uaffr:
+	Xr--;
+	Code37066(mem58);
+	Ar = Ar & A_UAFF;
+	if(Ar != 0) goto pos37330;
+	goto pos36700;
 
 	// --------------
 
