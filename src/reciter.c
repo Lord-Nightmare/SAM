@@ -9,6 +9,16 @@ extern int debug;
 
 static unsigned char inputtemp[256];   // secure copy of input tab36096
 
+#define A_DIGIT 0x01
+#define A_PUNCT 0x02
+#define A_UAFF 0x04
+#define A_VOICED 0x08
+#define A_SIBIL 0x10
+#define A_CONS 0x20
+#define A_VOWEL 0x40
+#define A_LETTER 0x80
+
+
 void Code37055(unsigned char mem59)
 {
 	Xr = mem59;
@@ -109,7 +119,7 @@ pos36554:
 		if (Ar != '.') break;
 		Xr++;
 		Yr = inputtemp[Xr];
-		Ar = tab36376[Yr] & 1;
+		Ar = tab36376[Yr] & A_DIGIT;
 		if(Ar != 0) break;
 		mem56++;
 		Xr = mem56;
@@ -123,7 +133,7 @@ pos36554:
 	Yr = Ar;
 	Ar = tab36376[Ar];
 	mem57 = Ar;
-	if((Ar&2) != 0)
+	if((Ar & A_PUNCT) != 0)
 	{
 		mem62 = 37541;
 		goto pos36700;
@@ -246,7 +256,7 @@ pos36791:
 		//36800: BPL 36805
 		if ((Ar & 128) != 0) goto pos37180;
 		Xr = Ar & 127;
-		Ar = tab36376[Xr] & 128;
+		Ar = tab36376[Xr] & A_LETTER;
 		if (Ar == 0) break;
 		Xr = mem59-1;
 		Ar = inputtemp[Xr];
@@ -272,7 +282,7 @@ pos36791:
 
 pos36895:
 	Code37055(mem59);
-	Ar = Ar & 128;
+	Ar = Ar & A_LETTER;
 	if(Ar != 0) goto pos36700;
 pos36905:
 	mem59 = Xr;
@@ -282,7 +292,7 @@ pos36905:
 
 pos36910:
 	Code37055(mem59);
-	Ar = Ar & 64;
+	Ar = Ar & A_VOWEL;
 	if(Ar != 0) goto pos36905;
 	goto pos36700;
 
@@ -291,7 +301,7 @@ pos36910:
 
 pos36920:
 	Code37055(mem59);
-	Ar = Ar & 8;
+	Ar = Ar & A_VOICED;
 	if(Ar == 0) goto pos36700;
 pos36930:
 	mem59 = Xr;
@@ -301,7 +311,7 @@ pos36930:
 
 pos36935:
 	Code37055(mem59);
-	Ar = Ar & 16;
+	Ar = Ar & A_SIBIL;
 	if(Ar != 0) goto pos36930;
 	Ar = inputtemp[Xr];
 	if (Ar != 'H') goto pos36700;
@@ -314,7 +324,7 @@ pos36935:
 
 pos36967:
 	Code37055(mem59);
-	Ar = Ar & 4;
+	Ar = Ar & A_UAFF;
 	if(Ar != 0) goto pos36930;
 	Ar = inputtemp[Xr];
 	if (Ar != 'H') goto pos36700;
@@ -327,7 +337,7 @@ pos36967:
 
 pos37004:
 	Code37055(mem59);
-	Ar = Ar & 32;
+	Ar = Ar & A_CONS;
 	if(Ar == 0) goto pos36700;
 
 pos37014:
@@ -346,7 +356,7 @@ pos37019:
 
 pos37040:
 	Code37055(mem59);
-	Ar = Ar & 32;
+	Ar = Ar & A_CONS;
 	if(Ar == 0) goto pos36791;
 	mem59 = Xr;
 	goto pos37040;
@@ -361,7 +371,7 @@ pos37077:
 	Xr++;
 	Yr = inputtemp[Xr];
 	Xr--;
-	Ar = tab36376[Yr] & 128;
+	Ar = tab36376[Yr] & A_LETTER;
 	if(Ar == 0) goto pos37108;
 	Xr++;
 	Ar = inputtemp[Xr];
@@ -416,7 +426,7 @@ pos37184:
 	Ar = GetRuleByte(mem62, Yr);
 	mem57 = Ar;
 	Xr = Ar;
-	Ar = tab36376[Xr] & 128;
+	Ar = tab36376[Xr] & A_LETTER;
 	if(Ar == 0) goto pos37226;
 	Xr = mem58+1;
 	Ar = inputtemp[Xr];
@@ -442,7 +452,7 @@ pos37226:
 	// --------------
 pos37295:
 	Code37066(mem58);
-	Ar = Ar & 128;
+	Ar = Ar & A_LETTER;
 	if(Ar != 0) goto pos36700;
 pos37305:
 	mem58 = Xr;
@@ -452,7 +462,7 @@ pos37305:
 
 pos37310:
 	Code37066(mem58);
-	Ar = Ar & 64;
+	Ar = Ar & A_VOWEL;
 	if(Ar != 0) goto pos37305;
 	goto pos36700;
 
@@ -461,7 +471,7 @@ pos37310:
 
 pos37320:
 	Code37066(mem58);
-	Ar = Ar & 8;
+	Ar = Ar & A_VOICED;
 	if(Ar == 0) goto pos36700;
 
 pos37330:
@@ -472,7 +482,7 @@ pos37330:
 
 pos37335:
 	Code37066(mem58);
-	Ar = Ar & 16;
+	Ar = Ar & A_SIBIL;
 	if(Ar != 0) goto pos37330;
 	Ar = inputtemp[Xr];
 	if (Ar != 'H') goto pos36700;
@@ -486,7 +496,7 @@ pos37335:
 
 pos37367:
 	Code37066(mem58);
-	Ar = Ar & 4;
+	Ar = Ar & A_UAFF;
 	if(Ar != 0) goto pos37330;
 	Ar = inputtemp[Xr];
 	if (Ar != 'H') goto pos36700;
@@ -498,7 +508,7 @@ pos37367:
 
 pos37404:
 	Code37066(mem58);
-	Ar = Ar & 32;
+	Ar = Ar & A_CONS;
 	if(Ar == 0) goto pos36700;
 pos37414:
 	mem58 = Xr;
@@ -518,7 +528,7 @@ pos37419:
 pos37440:
 
 	Code37066(mem58);
-	Ar = Ar & 32;
+	Ar = Ar & A_CONS;
 	if(Ar == 0) goto pos37184;
 	mem58 = Xr;
 	goto pos37440;
@@ -533,7 +543,7 @@ pos37461:
 	//37461: LDA (62),y
 	Ar = GetRuleByte(mem62, Yr);
 	mem57 = Ar;
-	Ar = Ar & 127;
+	Ar = Ar & 0x7f;
 	if (Ar != '=')
 	{
 		mem56++;
