@@ -800,7 +800,8 @@ pos41503:
 		{
 // Change T to CH
 			if (debug) printf("RULE: T R -> CH R\n");
-			phonemeindex[pos-1] = 42;
+			A = 42; // 'CH'
+			phonemeindex[pos-1] = A;
 			goto pos41779;
 		}
 
@@ -813,8 +814,9 @@ pos41503:
 		if (A == 57)                    // 'D'
 		{
 // Change D to J
-			phonemeindex[pos-1] = 44;
 			if (debug) printf("RULE: D R -> J R\n");
+			A = 44; // 'J'
+			phonemeindex[pos-1] = A;
 			goto pos41788;
 		}
 
